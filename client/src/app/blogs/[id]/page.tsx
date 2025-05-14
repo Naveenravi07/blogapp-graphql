@@ -15,7 +15,6 @@ const GET_POST = gql`
   }
 `;
 
-
 export default async function BlogDetail({params,}: { params: { id: string }}) {
   let post: BlogPost | null = null;
   let error: string | null = null;
@@ -61,13 +60,10 @@ export default async function BlogDetail({params,}: { params: { id: string }}) {
           <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
           <p className="text-gray-600 mb-6">Author: {post.author}</p>
 
-          <div className="prose max-w-none">
-            {post.content.split("\n\n").map((paragraph, index) => (
-              <p key={index} className="mb-4">
-                {paragraph}
-              </p>
-            ))}
-          </div>
+          <div 
+            className="prose max-w-none"
+            dangerouslySetInnerHTML={{ __html: post.content }}
+          />
         </article>
       )}
     </main>

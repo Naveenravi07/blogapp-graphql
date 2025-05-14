@@ -6,7 +6,6 @@ import { typeDefs } from "./graphql/schemas";
 import { resolvers } from "./graphql/resolvers";
 import { expressMiddleware } from '@apollo/server/express4';
 import { ApolloServer } from '@apollo/server';
-import AppError from './classes/Error';
 import { globalErrorHandler } from './middlewares/errorHandler';
 
 dotenv.config();
@@ -14,7 +13,14 @@ const PORT = process.env.PORT || 4000;
 
 async function startServer() {
   const app = express();
-  app.use(cors());
+  
+  app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  }));
+
   await DatabaseService.connect(process.env.MONGODB_URI || '');
 
   const server = new ApolloServer({
@@ -26,7 +32,12 @@ async function startServer() {
 
   app.use(
     '/graphql',
-    cors<cors.CorsRequest>(),
+    cors<cors.CorsRequest>({
+      origin: 'http://localhost:3000',
+      credentials: true,
+      methods: ['GET', 'POST', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization'],
+    }),
     express.json(),
     expressMiddleware(server),
   );

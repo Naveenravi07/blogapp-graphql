@@ -1,6 +1,7 @@
 import type React from "react"
 import type { Metadata } from "next"
 import "./globals.css"
+import { ApolloWrapper } from "@/components/ApolloWrapper"
 
 export const metadata: Metadata = {
   title: "Simple Blog",
@@ -20,7 +21,9 @@ export default function RootLayout({
             <h1 className="text-2xl font-bold">Blog App</h1>
           </div>
         </header>
-        {children}
+        <ApolloWrapper>
+          {children}
+        </ApolloWrapper>
       </body>
     </html>
   )
