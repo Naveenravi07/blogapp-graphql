@@ -5,7 +5,10 @@ import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { gql, useMutation } from "@apollo/client"
-import { BtnBold, BtnBulletList, BtnItalic, BtnLink, BtnNumberedList, BtnUnderline, ContentEditableEvent, Editor, EditorProvider, Toolbar } from "react-simple-wysiwyg"
+import { RichTextEditor, Link as RichTextLink } from '@mantine/tiptap';
+import { useEditor } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import { Link as TipTapLink } from '@tiptap/extension-link';
 
 const CREATE_POST = gql`
   mutation CreateBlogPost($input: CreateBlogPostInput!) {
@@ -38,14 +41,19 @@ export default function CreatePostPage() {
         }))
     }
 
-    const [html, setHtml] = useState('');
-    function onHtmlChange(e: ContentEditableEvent) {
-        setHtml(e.target.value);
-        setFormData(prev => ({
-            ...prev,
-            content: e.target.value
-        }))
-    }
+    const editor = useEditor({
+        extensions: [
+            StarterKit,
+            TipTapLink,
+        ],
+        content: '',
+        onUpdate: ({ editor }) => {
+            setFormData(prev => ({
+                ...prev,
+                content: editor.getHTML()
+            }))
+        }
+    });
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -56,7 +64,7 @@ export default function CreatePostPage() {
                 variables: {
                     input: {
                         title: formData.title,
-                        content: formData.content || html,
+                        content: formData.content,
                         author: formData.author
                     }
                 }
@@ -125,18 +133,23 @@ export default function CreatePostPage() {
                         <label htmlFor="content" className="block text-sm font-medium text-gray-700">
                             Content
                         </label>
-                        <EditorProvider>
-                            <Editor containerProps={{ style: { height: 250 } }} value={html} onChange={onHtmlChange} >
-                                <Toolbar>
-                                    <BtnBold />
-                                    <BtnItalic />
-                                    <BtnLink />
-                                    <BtnUnderline />
-                                    <BtnBulletList />
-                                    <BtnNumberedList />
-                                </Toolbar>
-                            </Editor>
-                        </EditorProvider>
+                        <RichTextEditor editor={editor}>
+                            <RichTextEditor.Toolbar sticky stickyOffset={60}>
+                                <RichTextEditor.ControlsGroup>
+                                    <RichTextEditor.Bold />
+                                    <RichTextEditor.Italic />
+                                    <RichTextEditor.Underline />
+                                    <RichTextEditor.Link />
+                                </RichTextEditor.ControlsGroup>
+
+                                <RichTextEditor.ControlsGroup>
+                                    <RichTextEditor.BulletList />
+                                    <RichTextEditor.OrderedList />
+                                </RichTextEditor.ControlsGroup>
+                            </RichTextEditor.Toolbar>
+
+                            <RichTextEditor.Content />
+                        </RichTextEditor>
                     </div>
 
                     <div className="pt-2">

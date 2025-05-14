@@ -2,6 +2,7 @@ import { getClient } from "@/lib/appolo-client";
 import { BlogPost } from "@/types/blog";
 import { gql } from "@apollo/client";
 import Link from "next/link";
+import '@mantine/tiptap/styles.css';
 
 const GET_POST = gql`
   query GetPost($_id: ID!) {
@@ -18,6 +19,19 @@ const GET_POST = gql`
 interface PageProps {
   params: Promise<{ id: string }>;
 }
+
+const richTextStyles = `
+  .mantine-tiptap-content h1 { font-size: 2em; font-weight: bold; margin-bottom: 0.5em; }
+  .mantine-tiptap-content h2 { font-size: 1.5em; font-weight: bold; margin-bottom: 0.5em; }
+  .mantine-tiptap-content h3 { font-size: 1.25em; font-weight: bold; margin-bottom: 0.5em; }
+  .mantine-tiptap-content p { margin-bottom: 1em; }
+  .mantine-tiptap-content ul { list-style: disc; margin-left: 1em; margin-bottom: 1em; }
+  .mantine-tiptap-content ol { list-style: decimal; margin-left: 1em; margin-bottom: 1em; }
+  .mantine-tiptap-content li { margin-bottom: 0.5em; }
+  .mantine-tiptap-content a { color: #2563eb; text-decoration: underline; }
+  .mantine-tiptap-content strong { font-weight: bold; }
+  .mantine-tiptap-content em { font-style: italic; }
+`;
 
 export default async function BlogDetail({ params }: PageProps) {
   let post: BlogPost | null = null;
@@ -37,6 +51,7 @@ export default async function BlogDetail({ params }: PageProps) {
 
   return (
     <main className="container mx-auto px-4 py-8 max-w-3xl">
+      <style>{richTextStyles}</style>
       <Link
         href="/"
         className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-6"
@@ -68,7 +83,7 @@ export default async function BlogDetail({ params }: PageProps) {
           <p className="text-gray-600 mb-6">Author: {post.author}</p>
 
           <div 
-            className="prose max-w-none"
+            className="prose max-w-none mantine-tiptap-content"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
         </article>

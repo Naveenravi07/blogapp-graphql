@@ -1,6 +1,9 @@
 import type React from "react"
 import type { Metadata } from "next"
 import "./globals.css"
+import '@mantine/core/styles.css';
+import '@mantine/tiptap/styles.css';
+import { MantineProvider } from '@mantine/core';
 import { ApolloWrapper } from "@/components/ApolloWrapper"
 
 export const metadata: Metadata = {
@@ -21,9 +24,11 @@ export default function RootLayout({
             <h1 className="text-2xl font-bold">Blog App</h1>
           </div>
         </header>
-        <ApolloWrapper>
-          {children}
-        </ApolloWrapper>
+        <MantineProvider>
+          <ApolloWrapper>
+            {children}
+          </ApolloWrapper>
+        </MantineProvider>
       </body>
     </html>
   )
