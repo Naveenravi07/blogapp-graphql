@@ -1,6 +1,6 @@
 
 type BlogPost {
-  id: ID!
+  _id: ID!
   title: String!
   content: String!
   author: String!
@@ -10,23 +10,15 @@ type BlogPost {
 
 type Query {
   blogPosts: [BlogPost!]!
-  blogPost(id: ID!): BlogPost
+  blogPost(_id: ID!): BlogPost
 }
 
 type Mutation {
   createBlogPost(input: CreateBlogPostInput!): BlogPost!
-  updateBlogPost(id: ID!, input: UpdateBlogPostInput!): BlogPost!
-  deleteBlogPost(id: ID!): Boolean!
 }
 
 input CreateBlogPostInput {
   title: String!
   content: String!
   author: String!
-}
-
-input UpdateBlogPostInput {
-  title: String
-  content: String
-  author: String
 }

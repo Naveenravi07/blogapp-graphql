@@ -4,24 +4,23 @@
   "description": "",
   "scripts": {
     "start": "node dist/server.js",
-    "dev:server": "ts-node src/server.ts",
-    "build:server": "tsc",
-    "dev": "concurrently \"npm run dev:server\""
+    "dev": "nodemon",
+    "build:server": "tsc"
   },
   "dependencies": {
     "@apollo/server": "^4.12.0",
     "@graphql-tools/load-files": "^7.0.1",
-    "apollo-server-express": "^3.12.1",
+    "@graphql-tools/merge": "^9.0.24",
     "appolo": "^7.0.5",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "graphql": "^16.8.1",
     "mongodb": "^5.8.1",
-    "uuid": "^11.1.0",
-    "uuidv4": "^6.2.13"
+    "nodemon": "^3.1.10"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.18",
     "@types/express": "^4.17.18",
     "@types/node": "^20.8.2",
     "concurrently": "^8.2.1",

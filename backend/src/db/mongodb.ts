@@ -1,11 +1,11 @@
 import { Collection, Db, MongoClient } from 'mongodb';
-import { BlogPost } from '../types';
+import { BlogPost } from '../types/blog';
 
 export class DatabaseService {
   private static client: MongoClient;
   private static db: Db;
-  public static blogPosts: Collection<BlogPost>
-
+  public static blogPosts: Collection<Omit<BlogPost, '_id'>>;
+  
   static async connect(uri: string): Promise<void> {
     try {
       this.client = new MongoClient(uri);
