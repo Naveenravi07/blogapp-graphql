@@ -9,7 +9,7 @@ import {
 
 function makeClient() {
   const httpLink = new HttpLink({
-    uri: "http://localhost:4000/graphql",
+    uri: "https://blogapp-graphql.onrender.com/graphql",
     credentials: "include",
     fetchOptions: {},
   });

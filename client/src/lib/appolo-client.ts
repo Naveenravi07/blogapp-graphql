@@ -9,7 +9,7 @@ export const { getClient, query, PreloadQuery } = registerApolloClient(() => {
   return new ApolloClient({
     cache: new InMemoryCache(),
     link: new HttpLink({
-      uri: "http://localhost:4000/graphql",
+      uri: "https://blogapp-graphql.onrender.com/graphql",
       fetchOptions: {
         // you can pass additional options that should be passed to `fetch` here,
         // e.g. Next.js-related `fetch` options regarding caching and revalidation
