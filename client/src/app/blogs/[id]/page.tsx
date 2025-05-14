@@ -15,13 +15,20 @@ const GET_POST = gql`
   }
 `;
 
-export default async function BlogDetail({params,}: { params: { id: string }}) {
+interface PageProps {
+  params: Promise<{ id: string }>;
+}
+
+export default async function BlogDetail({ params }: PageProps) {
   let post: BlogPost | null = null;
   let error: string | null = null;
 
   try {
-    let {id} = await params
-    const { data } = await getClient().query({query: GET_POST,variables: { _id: id }});
+    const resolvedParams = await params;
+    const { data } = await getClient().query({
+      query: GET_POST,
+      variables: { _id: resolvedParams.id }
+    });
     post = data.blogPost;
   } catch (err) {
     console.error("Failed to fetch blog post:", err);
